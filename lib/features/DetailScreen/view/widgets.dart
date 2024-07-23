@@ -1,0 +1,12 @@
+export 'widgets/AddAndBuyButtons.dart';
+export 'widgets/ColCard.dart';
+export 'widgets/DetailCard.dart';
+export 'widgets/NameAndCategory.dart';
+export 'widgets/RowCard.dart';
+export 'widgets/DetailBreadCrumbs.dart';
+export 'widgets/DetailCarouselAndGrid.dart';
+export 'widgets/DetailGrid.dart';
+export 'widgets/DetailCarousel.dart';
+export 'widgets/DetailDescription.dart';
+export 'widgets/DetailDescriptionAndRating.dart';
+export 'widgets/Error.dart';

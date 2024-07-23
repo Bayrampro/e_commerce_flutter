@@ -1,0 +1,45 @@
+name: e_commerce
+description: "Test project for hh.ru"
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.4.3 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  go_router: ^14.2.1
+  carousel_slider: ^4.2.1
+  flutter_breadcrumb: ^1.0.1
+  auto_size_text: ^3.0.0
+  retrofit: ^4.1.0
+  flutter_bloc: ^8.1.6
+  json_annotation: ^4.9.0
+  dio: ^5.5.0
+  equatable: ^2.0.5
+
+
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.2
+  build_runner: ^2.4.11
+  json_serializable: ^6.8.0
+  retrofit_generator: ^8.1.2
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+     - assets/logo.png
+     - assets/kolbasa.jpg
+
+  fonts:
+     - family: Roboto
+       fonts:
+         - asset: fonts/Roboto-Regular.ttf
