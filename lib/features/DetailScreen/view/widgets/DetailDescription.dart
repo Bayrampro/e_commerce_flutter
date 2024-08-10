@@ -29,7 +29,7 @@ class DetailDescription extends StatelessWidget {
                 fontWeight: FontWeight.w400,
               ),
               textAlign: TextAlign.justify,
-              maxLines: 10, // Set a maximum number of lines if desired
+              maxLines: 10,
               softWrap: true,
             ),
           ),

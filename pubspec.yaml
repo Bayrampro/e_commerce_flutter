@@ -2,7 +2,7 @@ name: e_commerce
 description: "Test project for hh.ru"
 publish_to: 'none'
 
-version: 1.0.0+1
+version: 1.0.1
 
 environment:
   sdk: '>=3.4.3 <4.0.0'
@@ -19,7 +19,9 @@ dependencies:
   json_annotation: ^4.9.0
   dio: ^5.5.0
   equatable: ^2.0.5
-
+  shared_preferences: ^2.2.3
+  pin_code_fields: ^8.0.1
+  google_sign_in: ^6.2.1
 
   cupertino_icons: ^1.0.8
 
@@ -38,6 +40,7 @@ flutter:
   assets:
      - assets/logo.png
      - assets/kolbasa.jpg
+     - assets/google.png
 
   fonts:
      - family: Roboto

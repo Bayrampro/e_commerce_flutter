@@ -48,6 +48,11 @@ class DropDownResponsiveMenu extends StatelessWidget {
               PopupMenuItem(
                   child: TextButton(
                 onPressed: () {},
+                child: const Text('Регистрация'),
+              )),
+              PopupMenuItem(
+                  child: TextButton(
+                onPressed: () {},
                 child: LocalizationButtons(
                   color: theme.primaryColor,
                 ),

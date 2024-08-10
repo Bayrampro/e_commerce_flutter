@@ -33,8 +33,9 @@ class _SearchFieldState extends State<SearchField> {
               .copyWith(bottom: widget.bottomPadding),
           child: Container(
             decoration: BoxDecoration(
-                color: theme.canvasColor,
-                borderRadius: BorderRadius.circular(7)),
+              color: theme.canvasColor,
+              borderRadius: BorderRadius.circular(7),
+            ),
             child: Row(
               children: [
                 Flexible(

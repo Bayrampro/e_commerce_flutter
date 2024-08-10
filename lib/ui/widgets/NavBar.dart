@@ -1,8 +1,11 @@
-import 'dart:developer';
+import 'dart:async';
 
+import 'package:e_commerce/bloc/auth_bloc/auth_bloc.dart';
 import 'package:e_commerce/bloc/category_bloc/category_bloc.dart';
 import 'package:e_commerce/features/CategoryScreen/Category.dart';
+import 'package:e_commerce/features/HomeScreen/Home.dart';
 import 'package:e_commerce/features/api/models/category.dart';
+import 'package:e_commerce/repositories/auth_token/auth_token.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -27,6 +30,8 @@ class _NavBarState extends State<NavBar> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
+    final authTokenRepository = context.read<AuthTokenInterface>();
+    bool isAuthenticated = authTokenRepository.isAuthenticated ?? false;
     double? searchFieldWidth = 450.0;
     if (MediaQuery.of(context).size.width < 525) {
       searchFieldWidth = 300.0;
@@ -55,7 +60,36 @@ class _NavBarState extends State<NavBar> {
                 color: theme.cardColor,
               ),
             if (mediaQuery.size.width > 1030) const ShopBasket(),
-            if (mediaQuery.size.width > 1030) const AuthButton(),
+            if (mediaQuery.size.width > 1030 && !isAuthenticated)
+              AuthDropDown(
+                iconData: Icons.key,
+                tooltip: 'Авторизация',
+                onPressedFirst: () => context.go('/sign-in'),
+                onPressedGoogle: () => googleAuthAction(context),
+                label: 'Войти',
+                buttonIconData: Icons.login,
+              ),
+            if (mediaQuery.size.width > 1030 && !isAuthenticated)
+              AuthDropDown(
+                iconData: Icons.person,
+                tooltip: 'Регистрация',
+                onPressedFirst: () => context.go('/sign-up'),
+                onPressedGoogle: () => googleAuthAction(context),
+                label: 'Присоедениться',
+                buttonIconData: Icons.people_alt_outlined,
+              ),
+            if (mediaQuery.size.width > 1030 && isAuthenticated)
+              AuthButton(
+                backgroundColor: theme.primaryColor,
+                iconData: Icons.exit_to_app,
+                iconColor: theme.cardColor,
+                borderSide: BorderSide(color: theme.cardColor, width: 2),
+                onPressed: () {
+                  context.read<AuthBloc>().add(SignOutEvent());
+                  context.go('/sign-in');
+                },
+                tooltip: 'Выйти',
+              ),
           ],
         ),
       ),
@@ -78,6 +112,22 @@ class _NavBarState extends State<NavBar> {
     );
   }
 
+  Future<void> googleAuthAction(BuildContext context) async {
+    final completer = Completer();
+    context.read<AuthBloc>().add(
+          AuthWithGoogleEvent(
+            completer: completer,
+          ),
+        );
+    await completer.future;
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const HomeScreen(),
+      ),
+    );
+  }
+
   Future<void> _showCategoryDialog(BuildContext context) async {
     showDialog(
       context: context,
@@ -88,7 +138,6 @@ class _NavBarState extends State<NavBar> {
             width: 300,
             child: BlocBuilder<CategoryBloc, CategoryState>(
               builder: (context, state) {
-                log(state.toString());
                 if (state is! CategoryLoaded) {
                   return Container();
                 }
@@ -133,5 +182,62 @@ class _NavBarState extends State<NavBar> {
       );
       context.go('/category/${categories[index].slug}');
     });
+  }
+}
+
+class AuthDropDown extends StatelessWidget {
+  const AuthDropDown({
+    super.key,
+    required this.iconData,
+    required this.tooltip,
+    required this.onPressedFirst,
+    required this.label,
+    required this.buttonIconData,
+    required this.onPressedGoogle,
+  });
+
+  final IconData iconData;
+  final String tooltip;
+  final VoidCallback onPressedFirst;
+  final VoidCallback onPressedGoogle;
+  final String label;
+  final IconData buttonIconData;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return PopupMenuButton(
+      icon: Icon(
+        iconData,
+        color: theme.cardColor,
+      ),
+      tooltip: tooltip,
+      color: theme.cardColor,
+      itemBuilder: (context) => <PopupMenuEntry<String>>[
+        PopupMenuItem(
+          child: TextButton.icon(
+            onPressed: onPressedFirst,
+            label: Text(label),
+            icon: Icon(buttonIconData),
+          ),
+        ),
+        PopupMenuItem(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'google.png',
+                width: 25,
+                height: 25,
+              ),
+              TextButton(
+                onPressed: onPressedGoogle,
+                child: const Text('с помощью Google'),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }
